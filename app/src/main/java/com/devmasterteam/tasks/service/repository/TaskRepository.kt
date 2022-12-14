@@ -1,15 +1,10 @@
 package com.devmasterteam.tasks.service.repository
 
 import android.content.Context
-import android.os.AsyncTask
-import com.devmasterteam.tasks.R
 import com.devmasterteam.tasks.service.listener.APIListener
 import com.devmasterteam.tasks.service.model.TaskModel
 import com.devmasterteam.tasks.service.repository.remote.RetrofitClient
 import com.devmasterteam.tasks.service.repository.remote.TaskService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class TaskRepository(context: Context):BaseRepository(context) {
@@ -34,6 +29,11 @@ class TaskRepository(context: Context):BaseRepository(context) {
         executeCall(call, listener)
     }
 
+    fun update(task: TaskModel, listener: APIListener<Boolean>) {
+        val call = remote.update(task.id,task.priorityId, task.description, task.dueDate, task.complete)
+        executeCall(call, listener)
+    }
+
     fun delete(id: Int, listener: APIListener<Boolean>) {
         val call = remote.delete(id)
         executeCall(call, listener)
@@ -47,4 +47,10 @@ class TaskRepository(context: Context):BaseRepository(context) {
         executeCall(remote.undo(id), listener)
 
     }
+
+    fun load(id: Int, listener: APIListener<TaskModel>) {
+        executeCall(remote.load(id), listener)
+    }
+
+
 }
